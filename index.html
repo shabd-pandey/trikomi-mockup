@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trikomi - Design Beyond Dimensions</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --bg:#05060e; --bg2:#0a0c1c;
+    --purple:#8b5cf6; --purple2:#c084fc; --blue:#60a5fa;
+    --txt:#eef0ff; --dim:#9aa3c0;
+    --grad:linear-gradient(135deg,#6d28d9,#a855f7);
+  }
+  body{
+    font-family:'Segoe UI',-apple-system,'Helvetica Neue',Arial,sans-serif;
+    background:var(--bg); color:var(--txt); overflow-x:hidden;
+  }
+  .glow{position:fixed;border-radius:50%;filter:blur(120px);opacity:.35;pointer-events:none;z-index:0;}
+  .g1{width:600px;height:600px;background:#4c1d95;top:-200px;right:-100px;}
+  .g2{width:500px;height:500px;background:#1e3a8a;top:35%;left:-200px;}
+  .g3{width:550px;height:550px;background:#5b21b6;bottom:5%;right:-150px;}
+  .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 48px;}
+
+  /* NAV */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:26px 48px;position:relative;z-index:2;}
+  .logo{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;letter-spacing:.5px;}
+  .logo svg{width:26px;height:26px;}
+  .links{display:flex;gap:34px;font-size:15px;color:var(--dim);}
+  .links a{color:var(--dim);text-decoration:none;display:flex;align-items:center;gap:6px;}
+  .links a:hover{color:#fff;}
+  .caret{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--dim);}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;background:var(--grad);color:#fff;
+    padding:12px 26px;font-size:15px;font-weight:600;text-decoration:none;border:none;cursor:pointer;
+    clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
+    box-shadow:0 0 24px rgba(139,92,246,.45);
+  }
+  .btn.ghost{background:rgba(139,92,246,.08);border:1px solid rgba(167,139,250,.5);box-shadow:none;}
+  .btn.sm{padding:10px 22px;font-size:14px;}
+
+  /* HERO */
+  .hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:24px;padding:56px 0 40px;}
+  .eyebrow{color:var(--purple2);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:18px;}
+  h1{font-size:64px;line-height:1.05;font-weight:800;margin-bottom:20px;}
+  h1 .grad{background:linear-gradient(120deg,#a78bfa,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .sub{color:var(--dim);font-size:17px;line-height:1.6;margin-bottom:32px;max-width:440px;}
+  .cta-row{display:flex;align-items:center;gap:28px;}
+  .watch{display:flex;align-items:center;gap:12px;color:var(--txt);text-decoration:none;font-size:15px;}
+  .watch .play{width:38px;height:38px;border:1.5px solid rgba(238,240,255,.6);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+  .hero-art{position:relative;height:420px;display:flex;align-items:center;justify-content:center;}
+  .platform{position:absolute;bottom:36px;width:340px;height:70px;border-radius:50%;
+    background:radial-gradient(ellipse at center,rgba(168,85,247,.55),rgba(76,29,149,.15) 60%,transparent 75%);
+    box-shadow:0 0 60px 10px rgba(139,92,246,.35);}
+  .platform::after{content:'';position:absolute;inset:14px 30px;border-radius:50%;border:1.5px solid rgba(196,132,252,.6);}
+  .swoosh{position:absolute;width:420px;height:240px;border:2px solid transparent;border-radius:50%;
+    border-top-color:rgba(96,165,250,.6);border-right-color:rgba(139,92,246,.35);transform:rotate(-18deg);filter:blur(1px);}
+  .shoe{position:relative;z-index:2;transform:rotate(-12deg);filter:drop-shadow(0 24px 40px rgba(139,92,246,.5));}
+
+  /* FEATURE BAR */
+  .featbar{display:flex;justify-content:space-between;align-items:center;gap:8px;
+    background:rgba(20,23,45,.6);border:1px solid rgba(139,92,246,.25);backdrop-filter:blur(8px);
+    padding:26px 40px;margin:24px 0 70px;
+    clip-path:polygon(28px 0,calc(100% - 28px) 0,100% 50%,calc(100% - 28px) 100%,28px 100%,0 50%);}
+  .feat{display:flex;align-items:center;gap:14px;}
+  .feat .ic{width:44px;height:44px;flex:0 0 44px;border-radius:12px;background:rgba(139,92,246,.12);
+    border:1px solid rgba(167,139,250,.4);display:flex;align-items:center;justify-content:center;color:var(--purple2);}
+  .feat b{display:block;font-size:15px;font-weight:600;}
+  .feat span{font-size:13px;color:var(--dim);}
+
+  /* SECTIONS */
+  section{margin-bottom:80px;}
+  .split{display:grid;grid-template-columns:1fr 1.4fr;gap:48px;align-items:center;}
+  h2{font-size:42px;font-weight:800;line-height:1.15;margin-bottom:18px;}
+  .textlink{color:var(--purple2);text-decoration:none;font-size:15px;font-weight:600;display:inline-flex;align-items:center;gap:8px;margin-top:26px;}
+  .textlink::after{content:'';position:absolute;}
+  .cards{display:flex;gap:12px;perspective:900px;overflow:hidden;}
+  .card{flex:1 1 0;min-width:0;border-radius:18px;padding:14px 8px;min-height:190px;display:flex;flex-direction:column;justify-content:flex-end;
+    background:linear-gradient(160deg,rgba(35,39,70,.9),rgba(12,14,30,.95));border:1px solid rgba(139,92,246,.28);
+    transform:rotateY(-14deg) rotateX(4deg);transition:transform .3s;position:relative;overflow:hidden;}
+  .card:hover{transform:rotateY(-6deg);}
+  .card .art{position:absolute;inset:0 0 34% 0;display:flex;align-items:center;justify-content:center;}
+  .card label{font-size:11.5px;font-weight:600;display:flex;justify-content:space-between;align-items:center;position:relative;}
+  .card label .arr{width:20px;height:20px;flex:0 0 20px;border-radius:50%;border:1px solid rgba(238,240,255,.4);display:inline-flex;align-items:center;justify-content:center;font-size:12px;}
+
+  .ring-art{display:flex;align-items:center;justify-content:center;position:relative;height:340px;}
+  .rock{position:absolute;bottom:0;left:-10%;width:70%;height:46%;background:linear-gradient(150deg,#23263f,#0b0d1d 70%);
+    clip-path:polygon(0 100%,8% 35%,30% 55%,46% 12%,66% 48%,84% 22%,100% 60%,100% 100%);}
+  .panel{background:rgba(16,18,38,.85);border:1px solid rgba(139,92,246,.3);border-radius:20px;padding:18px;display:grid;grid-template-columns:52px 1fr;gap:16px;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+  .panel .side{display:flex;flex-direction:column;gap:12px;align-items:center;border-right:1px solid rgba(139,92,246,.2);padding-right:12px;}
+  .panel .side i{width:34px;height:34px;border-radius:10px;background:rgba(139,92,246,.1);border:1px solid rgba(167,139,250,.35);display:flex;align-items:center;justify-content:center;color:var(--purple2);font-style:normal;font-size:15px;}
+  .panel .view{border-radius:14px;background:radial-gradient(circle at 50% 35%,rgba(139,92,246,.25),rgba(10,12,26,.9) 70%);height:190px;display:flex;align-items:center;justify-content:center;position:relative;}
+  .panel .expand{position:absolute;top:10px;right:10px;color:var(--dim);font-size:13px;}
+  .swatches{display:flex;gap:10px;justify-content:center;margin-top:14px;}
+  .sw{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.15);}
+
+  /* STATS */
+  .stats{display:flex;justify-content:space-around;align-items:center;gap:8px;
+    background:rgba(20,23,45,.6);border:1px solid rgba(139,92,246,.25);padding:30px 40px;margin-bottom:80px;
+    clip-path:polygon(28px 0,calc(100% - 28px) 0,100% 50%,calc(100% - 28px) 100%,28px 100%,0 50%);}
+  .stat{display:flex;align-items:center;gap:14px;}
+  .stat .ic{width:46px;height:46px;border-radius:50%;background:rgba(139,92,246,.12);border:1px solid rgba(167,139,250,.4);display:flex;align-items:center;justify-content:center;color:var(--purple2);font-size:19px;}
+  .stat b{font-size:24px;display:block;}
+  .stat span{font-size:13px;color:var(--dim);}
+
+  /* CTA */
+  .cta{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:80px;}
+  .house{height:300px;border-radius:18px;position:relative;overflow:hidden;
+    background:linear-gradient(180deg,#1b1e3a 0%,#2b1650 45%,#3b1a63 60%,#12081f 100%);}
+  .house::before{content:'';position:absolute;left:12%;bottom:0;width:64%;height:62%;
+    background:
+      repeating-linear-gradient(90deg,transparent 0 30%,rgba(180,200,255,.35) 30% 32%),
+      repeating-linear-gradient(0deg,transparent 0 44%,rgba(180,200,255,.35) 44% 48%),
+      linear-gradient(180deg,rgba(255,210,130,.5),rgba(255,150,80,.22));
+    border:2px solid rgba(180,200,255,.35);border-bottom:none;
+    clip-path:polygon(0 100%,0 22%,55% 22%,55% 0,100% 0,100% 100%);}
+  .house::after{content:'';position:absolute;right:8%;bottom:18%;width:60px;height:110px;
+    background:radial-gradient(circle at 50% 20%,#3d6b35,#1e3d1a 70%);border-radius:50% 50% 12% 12%;}
+
+  /* FOOTER */
+  footer{border-top:1px solid rgba(139,92,246,.15);padding:28px 48px;display:flex;align-items:center;justify-content:space-between;color:var(--dim);font-size:13px;position:relative;z-index:1;}
+  footer .flinks{display:flex;gap:26px;}
+  footer a{color:var(--dim);text-decoration:none;}
+  .social{display:flex;gap:14px;}
+  .social span{width:26px;height:26px;border-radius:6px;border:1px solid rgba(238,240,255,.25);display:flex;align-items:center;justify-content:center;font-size:11px;}
+
+  @media (max-width:700px){
+    .hero,.split,.cta{grid-template-columns:1fr;}
+    .links{display:none;}
+    h1{font-size:44px;}
+    .featbar,.stats{flex-wrap:wrap;clip-path:none;border-radius:18px;gap:22px;}
+    .cards{flex-wrap:wrap;}
+    .card{min-width:44%;transform:none;}
+    nav,footer{padding:22px 24px;}
+    .wrap{padding:0 24px;}
+  }
+</style>
+</head>
+<body>
+<div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+
+<nav>
+  <div class="logo">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M4 4 L14 4 L9 20 L4 20 Z" fill="url(#lg)"/><path d="M12 4 L20 4 L15 12 Z" fill="#a78bfa"/><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8b5cf6"/><stop offset="1" stop-color="#c084fc"/></linearGradient></defs></svg>
+    Trikomi
+  </div>
+  <div class="links">
+    <a href="#">Solutions <span class="caret"></span></a>
+    <a href="#">Products <span class="caret"></span></a>
+    <a href="#">Resources <span class="caret"></span></a>
+    <a href="#">Pricing</a>
+  </div>
+  <a class="btn sm" href="#">Book a Demo &#8594;</a>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Bespoke 3D Configurator</p>
+      <h1>Design Beyond<br><span class="grad">Dimensions</span></h1>
+      <p class="sub">Create immersive, high-performance 3D configurators for e-commerce, fashion, jewelry and more.</p>
+      <div class="cta-row">
+        <a class="btn" href="#">Explore Solutions &#8594;</a>
+        <a class="watch" href="#"><span class="play">&#9654;</span> Watch Demo</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="swoosh"></div>
+      <div class="platform"></div>
+      <svg class="shoe" width="380" height="220" viewBox="0 0 380 220">
+        <defs>
+          <linearGradient id="upper" x1="0" y1="0" x2="0" y2="1">
+            <stop stop-color="#e8e9f2"/><stop offset=".6" stop-color="#b9bdd4"/><stop offset="1" stop-color="#8f94b0"/>
+          </linearGradient>
+          <linearGradient id="sole" x1="0" y1="0" x2="1" y2="0">
+            <stop stop-color="#7c3aed"/><stop offset=".5" stop-color="#a855f7"/><stop offset="1" stop-color="#6d28d9"/>
+          </linearGradient>
+        </defs>
+        <!-- sole -->
+        <path d="M20 160 Q10 150 22 142 L60 128 Q120 112 200 108 L330 104 Q362 106 366 122 Q368 138 350 146 L320 158 Q180 176 60 172 Q30 170 20 160 Z" fill="url(#sole)" opacity=".95"/>
+        <path d="M24 156 Q120 168 340 140" stroke="#c4b5fd" stroke-width="4" fill="none" opacity=".8"/>
+        <!-- upper -->
+        <path d="M52 130 Q48 84 76 60 Q96 42 118 40 Q138 40 148 56 L168 90 Q220 100 300 98 L344 96 Q356 96 356 108 L354 118 Q240 132 120 138 Z" fill="url(#upper)"/>
+        <!-- collar -->
+        <path d="M76 60 Q96 42 118 40 Q138 40 148 56 L154 66 Q120 58 96 72 Q82 80 76 92 Z" fill="#4b4f6b"/>
+        <!-- laces -->
+        <g stroke="#3f4360" stroke-width="5" stroke-linecap="round">
+          <line x1="120" y1="72" x2="150" y2="64"/><line x1="130" y1="86" x2="162" y2="78"/>
+          <line x1="140" y1="100" x2="174" y2="92"/><line x1="152" y1="112" x2="186" y2="104"/>
+        </g>
+        <!-- swoosh-like accent -->
+        <path d="M170 118 Q230 96 300 92 Q240 112 186 128 Z" fill="#7c3aed" opacity=".85"/>
+        <!-- heel glow -->
+        <ellipse cx="330" cy="130" rx="26" ry="14" fill="#a855f7" opacity=".55"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- FEATURE BAR -->
+  <div class="featbar">
+    <div class="feat"><div class="ic">&#9889;</div><div><b>Lightning Fast</b><span>Performance</span></div></div>
+    <div class="feat"><div class="ic">&#10022;</div><div><b>Photorealistic</b><span>Rendering</span></div></div>
+    <div class="feat"><div class="ic">&#9881;</div><div><b>Fully Customizable</b><span>Experiences</span></div></div>
+    <div class="feat"><div class="ic">&#10138;</div><div><b>Scale for</b><span>Enterprise</span></div></div>
+  </div>
+
+  <!-- CONFIGURATORS -->
+  <section class="split">
+    <div>
+      <p class="eyebrow">Powerful Configurators</p>
+      <h2>Bring Your Ideas<br>to Life</h2>
+      <p class="sub">From luxury jewelry to sportswear, packaging to virtual showrooms - one platform, endless possibilities.</p>
+      <a class="textlink" href="#">View All Solutions &#8594;</a>
+    </div>
+    <div class="cards">
+      <div class="card"><div class="art"><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="40" r="20" fill="none" stroke="#d7d9ea" stroke-width="6"/><path d="M28 16 L35 8 L42 16 L35 24 Z" fill="#bcd7ff"/></svg></div><label>Jewelry <span class="arr">&#8594;</span></label></div>
+      <div class="card"><div class="art"><svg width="80" height="46" viewBox="0 0 80 46"><path d="M4 14 Q4 8 12 8 L28 8 Q36 8 36 16 Q36 30 22 30 Q8 30 4 18 Z M44 8 L68 8 Q76 8 76 14 L76 18 Q72 30 58 30 Q44 30 44 16 Z M36 12 L44 12" fill="#1a1d33" stroke="#c9cce4" stroke-width="3"/></svg></div><label>Eyewear <span class="arr">&#8594;</span></label></div>
+      <div class="card"><div class="art"><svg width="70" height="66" viewBox="0 0 70 66"><path d="M22 8 L8 16 L12 28 L20 24 L20 58 L50 58 L50 24 L58 28 L62 16 L48 8 Q42 14 35 14 Q28 14 22 8 Z" fill="#2b3a8f" stroke="#5f6fd8" stroke-width="2"/></svg></div><label>Sportswear <span class="arr">&#8594;</span></label></div>
+      <div class="card"><div class="art"><svg width="66" height="60" viewBox="0 0 66 60"><path d="M6 20 L33 8 L60 20 L60 46 L33 58 L6 46 Z" fill="#242842" stroke="#8f94b0" stroke-width="2"/><path d="M6 20 L33 32 L60 20 M33 32 L33 58" stroke="#8f94b0" stroke-width="2" fill="none"/></svg></div><label>Packaging <span class="arr">&#8594;</span></label></div>
+      <div class="card"><div class="art"><svg width="72" height="56" viewBox="0 0 72 56"><rect x="4" y="6" width="64" height="44" rx="4" fill="#2c3157" stroke="#9aa3c0" stroke-width="2"/><rect x="12" y="14" width="22" height="28" fill="#7c8cd6" opacity=".7"/><rect x="40" y="14" width="20" height="12" fill="#a78bfa" opacity=".6"/><rect x="40" y="30" width="20" height="12" fill="#60a5fa" opacity=".5"/></svg></div><label>Virtual Tour <span class="arr">&#8594;</span></label></div>
+    </div>
+  </section>
+
+  <!-- REAL-TIME 3D -->
+  <section class="split">
+    <div class="ring-art">
+      <div class="rock"></div>
+      <svg width="240" height="240" viewBox="0 0 240 240" style="position:relative;z-index:2;filter:drop-shadow(0 18px 30px rgba(96,165,250,.35));">
+        <defs><linearGradient id="band" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f2f4ff"/><stop offset=".5" stop-color="#aab0cc"/><stop offset="1" stop-color="#e6e9f8"/></linearGradient></defs>
+        <ellipse cx="120" cy="150" rx="74" ry="70" fill="none" stroke="url(#band)" stroke-width="16"/>
+        <path d="M96 62 L120 34 L144 62 L120 84 Z" fill="#bfe0ff" stroke="#e8f4ff" stroke-width="3"/>
+        <path d="M104 62 L120 44 L136 62 L120 74 Z" fill="#7fb8f0"/>
+        <circle cx="88" cy="96" r="6" fill="#dfe6ff"/><circle cx="152" cy="96" r="6" fill="#dfe6ff"/>
+      </svg>
+    </div>
+    <div>
+      <p class="eyebrow">Real-Time 3D Experience</p>
+      <h2>Configure with<br>Confidence</h2>
+      <p class="sub">Give your customers the power to explore, personalize and experience products in stunning 3D - in real time.</p>
+      <a class="btn" href="#">Try Live Demo &#8594;</a>
+      <div style="height:26px"></div>
+      <div class="panel">
+        <div class="side"><i>&#9670;</i><i>&#9673;</i><i>&#9874;</i><i>&#8857;</i><i>&#9698;</i><i>&#9881;</i></div>
+        <div>
+          <div class="view">
+            <span class="expand">&#x26F6;</span>
+            <svg width="120" height="120" viewBox="0 0 240 240">
+              <ellipse cx="120" cy="150" rx="70" ry="66" fill="none" stroke="url(#band)" stroke-width="15"/>
+              <path d="M96 62 L120 34 L144 62 L120 84 Z" fill="#bfe0ff" stroke="#e8f4ff" stroke-width="3"/>
+            </svg>
+          </div>
+          <div class="swatches">
+            <span class="sw" style="background:#e5e7eb"></span>
+            <span class="sw" style="background:#93c5fd"></span>
+            <span class="sw" style="background:#8b5cf6"></span>
+            <span class="sw" style="background:#d4a373"></span>
+            <span class="sw" style="background:#f5d0a9"></span>
+            <span class="sw" style="background:#6b7280"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="ic">&#10022;</div><div><b>60+</b><span>Projects Delivered</span></div></div>
+    <div class="stat"><div class="ic">&#127760;</div><div><b>6+</b><span>Countries</span></div></div>
+    <div class="stat"><div class="ic">&#9889;</div><div><b>99.9%</b><span>Uptime</span></div></div>
+    <div class="stat"><div class="ic">&#9786;</div><div><b>100%</b><span>Client Satisfaction</span></div></div>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div>
+      <p class="eyebrow">Ready to Get Started?</p>
+      <h2>Let's Build Your<br>3D Experience Together</h2>
+      <div style="height:22px"></div>
+      <a class="btn" href="#">Book a Demo &#8594;</a>
+    </div>
+    <div class="house"></div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="logo" style="font-size:17px;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M4 4 L14 4 L9 20 L4 20 Z" fill="#8b5cf6"/><path d="M12 4 L20 4 L15 12 Z" fill="#a78bfa"/></svg>
+    Trikomi
+  </div>
+  <div>&copy; 2025 Trikomi. All rights reserved.</div>
+  <div class="flinks"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div>
+  <div class="social"><span>in</span><span>&#9654;</span><span>X</span><span>&#9829;</span></div>
+</footer>
+
+</body>
+</html>
